@@ -42,6 +42,12 @@ let num = ref(0)
 
 <style>
 
+body{
+  height: 100vh;
+  background: rgb(157,189,252);
+  background: linear-gradient(0deg, rgba(157,189,252,0.5130427170868348) 0%, rgba(0,56,144,0.7063200280112045) 100%);
+}
+
 footer{
   position: fixed;
   bottom: 0;
