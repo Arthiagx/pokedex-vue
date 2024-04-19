@@ -1,12 +1,12 @@
 <script setup>
-const pokemon = defineProps(["name", "urlBaseSvg"])
+const pokemon = defineProps(["id", "name", "urlBaseSvg"])
 
 </script>
 
 <template>
     <div class="col-4">
         <div class="card p-2 mb-3 cardListPokemon">
-            <p class="text-center">{{ pokemon.name }}</p>
+            <p class="text-center">#{{ pokemon.id }}  {{ pokemon.name }}</p>
             <img 
             :src="urlBaseSvg" class="card-img-top" 
             alt="..."

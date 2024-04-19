@@ -8,7 +8,7 @@ let num = ref(0)
 
 <template>
   <!-- navbar -->
-  <nav class="navbar navbar-expand-lg">
+  <nav class="navbar navbar-expand-lg bg-primary text-light">
   <div class="container-fluid">
     <router-link class="navbar-brand" to="/"> 
       <img src="https://images.tcdn.com.br/img/img_prod/906697/squirtle_bro_361_1_4bed790bd1b747451226541a5d904bf1.png" alt="Bootstrap" width="40" height="50">     

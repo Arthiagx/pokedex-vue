@@ -4,21 +4,22 @@ import ListPokemons from "../components/ListPokemons.vue";
 import CardPokemonSelected from "../components/CardPokemonSelected.vue";
 
 let urlBaseSvg = ref("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/")
-let pokemons = reactive(ref());
+let pokemons = reactive(ref([]));
 let searchPokemonField = ref("")
 let pokemonSelected = reactive(ref());
 let loading = ref(false)
+let offset = ref(0)
+let limit = ref(945)
 
-onMounted (() => {
-  fetch("https://pokeapi.co/api/v2/pokemon?limit=151&offset=0")
-  .then(res => res.json())
-  .then(res => pokemons.value = res.results);
+
+onMounted(() => {
+  fetchPokemons() // Call the function to fetch pokemons
 })
 
 const pokemonsFiltered = computed(() => {
   if(pokemons.value && searchPokemonField.value){
     return pokemons.value.filter(pokemon =>
-  pokemon.name.toLowerCase().includes(searchPokemonField.value.toLowerCase())
+      pokemon.name.toLowerCase().includes(searchPokemonField.value.toLowerCase())
     )
   }
   return pokemons.value;
@@ -27,12 +28,32 @@ const pokemonsFiltered = computed(() => {
 const selectPokemon = async (pokemon) => {
   loading.value = true;
   await fetch(pokemon.url)
-  .then(res => res.json())
-  .then(res => pokemonSelected.value = res)
-  .catch(err => alert(err))
-  .finally(() => loading.value = false)
+ .then(res => res.json())
+ .then(res => pokemonSelected.value = res)
+ .catch(err => alert(err))
+ .finally(() => loading.value = false)
 
   console.log(pokemonSelected.value)
+}
+
+const fetchPokemons = async () => {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit.value}&offset=${offset.value}`)
+  const data = await response.json()
+  pokemons.value = [...pokemons.value,...data.results.map(pokemon => ({
+    id: pokemon.url.split('/')[6],
+    name: pokemon.name,
+    url: pokemon.url
+  }))]
+  offset.value += limit.value // Update the offset
+}
+
+const handleScroll = async () => {
+  const scrollPosition = document.querySelector('.card-list').scrollTop + document.querySelector('.card-list').offsetHeight
+  const scrollHeight = document.querySelector('.card-list').scrollHeight
+
+  if (scrollPosition >= scrollHeight - 200) { // If the user has scrolled to the bottom
+    await fetchPokemons() // Fetch more pokemons
+  }
 }
 
 </script>
@@ -54,7 +75,7 @@ const selectPokemon = async (pokemon) => {
          />
         </div>
         <div class="col-sm-12 col-md-6">
-          <div class="card card-list">
+          <div class="card card-list" @scroll.passive="handleScroll">
             <div class="card-body row">
               
               <div class="input-group mb-3">
@@ -72,17 +93,17 @@ const selectPokemon = async (pokemon) => {
               </div>
 
               <ListPokemons
-                v-for="pokemon in pokemonsFiltered"
-                :key="pokemon.name"
-                :name="pokemon.name"
-                :urlBaseSvg="urlBaseSvg + pokemon.url.split('/')[6] + '.svg'"
-                @click="selectPokemon(pokemon)"
-                />
-            </div>          
+            v-for="pokemon in pokemonsFiltered"
+            :key="pokemon.name"
+            :name="pokemon.name"
+            :id="pokemon.id"
+            :urlBaseSvg="urlBaseSvg + pokemon.url.split('/')[6] + '.svg'"
+            @click="selectPokemon(pokemon)"
+          />
         </div>
-      </div>      
-    </div>     
-    
+      </div>
+    </div>
+    </div>
     </div>
   </main>
 </template>
