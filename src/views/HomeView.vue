@@ -9,7 +9,7 @@ let searchPokemonField = ref("")
 let pokemonSelected = reactive(ref());
 let loading = ref(false)
 let offset = ref(0)
-let limit = ref(945)
+let limit = ref(1000)
 
 
 onMounted(() => {
@@ -69,9 +69,13 @@ const handleScroll = async () => {
          <CardPokemonSelected
          :name="pokemonSelected?.name"
          :img="pokemonSelected?.sprites.other.dream_world.front_default"
-         :height="pokemonSelected?.height"
+         :height="pokemonSelected?.height"         
          :xp="pokemonSelected?.base_experience"
          :loading="loading"
+         :species="pokemonSelected?.types.map(m => m.type.name).join(', ')"
+         :ab="pokemonSelected?.abilities.map(m => m.ability.name).join(', ')"
+         :move="pokemonSelected?.moves.map(m => m.move.name).join(', ')"
+         :game="pokemonSelected?.game_indices.map(m => m.game_index).join(', ')"
          />
         </div>
         <div class="col-sm-12 col-md-6">
@@ -82,14 +86,14 @@ const handleScroll = async () => {
                 <label 
                 hidden 
                 for="searchPokemonField" 
-                class="form-label">Pesquisar...
+                class="form-label">Search for Pokemon by name...
               </label>
                 <input
                 v-model="searchPokemonField"
                 type="text" 
                 class="form-control" 
                 id="searchPokemonField" 
-                placeholder="Pesquisar...">
+                placeholder="Search for Pokemon by name...">
               </div>
 
               <ListPokemons

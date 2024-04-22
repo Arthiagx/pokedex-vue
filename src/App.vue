@@ -21,10 +21,7 @@ let num = ref(0)
       <ul class="navbar-nav">
         <li class="nav-item">
           <router-link class="nav-link" aria-current="page" to="/">Home</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" to="/about">About</router-link>
-        </li>
+        </li>        
       </ul>
     </div>
   </div>
@@ -36,14 +33,14 @@ let num = ref(0)
 </div>
 
 <footer class="bg-primary text-light">
-  <div> Design in {{ new Date().getFullYear() }}.</div>
+  <div> <small>&copy; Copyright, {{ new Date().getFullYear() }} @Arthiagx.</small></div>
 </footer>
 </template>
 
 <style>
 
 body{
-  height: 100vh;
+  height: 100vh 100%;
   background: rgb(157,189,252);
   background: linear-gradient(0deg, rgba(157,189,252,0.5130427170868348) 0%, rgba(0,56,144,0.7063200280112045) 100%);
 }
@@ -55,6 +52,6 @@ footer{
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px;
+  height: 25px;
 }
 </style>
