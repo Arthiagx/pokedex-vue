@@ -1,17 +1,21 @@
 module.exports = {
-    root: true,
-    env: {
-      node: true
-    },
-    extends: [
-      'eslint:recommended',
-      'plugin:vue/vue3-recommended'
-    ],
-    parserOptions: {
-      parser: 'babel-eslint'
-    },
-    rules: {
-      'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-      'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
-    }
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'eslint-loader',
+            options: {
+              eslintPath: 'eslint',
+              eslintOptions: {
+                fix: true,
+              },
+            },
+          },
+        ],
+      },
+    ],  
   }
+}
